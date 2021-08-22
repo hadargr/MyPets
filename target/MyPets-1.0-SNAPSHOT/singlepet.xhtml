@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Single Pet</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="index.xhtml">
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data" styleClass="appForm" id="myPetsForm">
+                    <b:container>
+                        <h1>Edit Pet</h1>
+                        <b:container>
+                            <b:image styleClass="petImage" name="#{singlePetPageBean.selectedPet.photoFileName}" rendered="#{singlePetPageBean.selectedPet.photoFileName != null}" />
+                            <b:image styleClass="petImage" name="/images/empty.jpeg" rendered="#{singlePetPageBean.selectedPet.photoFileName == null}" />
+                            <div class="imageButtonsContainer">
+                                <h:inputFile value="#{singlePetPageBean.file}"/>
+                                <h:commandButton style="width: 70px;" value="Update" action="#{singlePetPageBean.processUpload()}"></h:commandButton>
+                            </div>
+                        </b:container>
+                        <b:formGroup styleClass="appFormGroup">
+                            <div class="inputContainer">
+                                <b:inputText id="nameInput" required="true"
+                                             requiredMessage="Please enter pet's name"
+                                             value="#{singlePetPageBean.selectedPet.name}" maxlength="30" label="Pet's Name">
+                                </b:inputText>
+                                <h:message for="nameInput" styleClass="error"/>
+                            </div>
+                            <div class="inputContainer">
+                                <b:inputText id="firstNameInput" required="true"
+                                             requiredMessage="Please enter first name"
+                                             validatorMessage="First Name must be fewer than 30 characters"
+                                             value="#{myAccountPageBean.firstName}" label="First Name">
+                                    <f:validateLength maximum="30" />
+                                </b:inputText>
+                                <h:message for="firstNameInput" styleClass="error"/>
+                            </div>
+                        </b:formGroup>
+                    </b:container>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="index.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+   <ui:define name="content">
+    <h:form styleClass="appForm">
+     <div class="appFormContainer">
+     <h1>Login</h1>
+            <div class="inputContainer">
+                <h:inputText id="emailInput" required="true"
+                   requiredMessage="Please enter email"
+                   value="#{loginPageBean.email}" pt:placeholder="Email">
+                </h:inputText>
+                <h:message for="emailInput" styleClass="error"/>
+            </div>
+         <div class="inputContainer">
+            <h:inputSecret id="passwordInput" required="true"
+               requiredMessage="Please enter password" redisplay="true"
+               value="#{loginPageBean.password}" pt:placeholder="Password">
+            </h:inputSecret>
+            <h:message for="passwordInput" styleClass="error"/>
+         </div>
+            <h:commandButton id="savebtn" value="Login" action="#{loginPageBean.doLogin}">
+             <!-- <f:ajax render="@form" execute="@form"/>-->
+           </h:commandButton>
+        <h:outputText id="errorText" escape="false"
+            value="#{loginPageBean.error}" styleClass="error"/>
+     </div>
+     </h:form>
+   </ui:define>
+</ui:composition>
+

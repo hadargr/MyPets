@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>My Pets</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="index.xhtml">
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data" styleClass="appForm" id="myPetsForm">
+                    <b:container>
+                        <h1>My Pets</h1>
+                        <ui:repeat value="#{myPetsPageBean.currentUserPets}" var="pet">
+                            <b:formGroup styleClass="appFormGroup">
+                                <b:image styleClass="petImage" name="#{pet.photoFileName}" rendered="#{pet.photoFileName != null}" />
+                                <b:image styleClass="petImage" name="/images/empty.jpeg" rendered="#{pet.photoFileName == null}" />
+                                <div>
+                                    <b:commandButton style="width:100px; margin-bottom:10px; text-align: start;" value="Edit" action="#{myPetsPageBean.editPet(pet)}" iconAwesome="fa-file"></b:commandButton>
+                                    <br></br>
+                                    <b:commandButton style="width:100px; text-align: start;" value="Remove" action="#{myPetsPageBean.removePet(pet)}" iconAwesome="fa-trash"></b:commandButton>
+                                </div>
+                            </b:formGroup>
+                        </ui:repeat>
+                        <b:commandButton value="Add pet" iconAwesome="fa-plus-circle" look="primary" />
+                    </b:container>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

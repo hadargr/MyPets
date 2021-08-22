@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!-- index.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>My Pets</title>
+        <h:outputStylesheet name="style.css" library="css"/>
+    </h:head>
+    <h:body style="padding: 60px;">
+        <h:form id="mainForm">
+            <b:navBar inverse="true" fixed="top" sticky="true">
+                <b:navbarLinks>
+                    <b:navLink value="Home Is Where Your Pet Is" icon-awesome="fa-paw" outcome="index"></b:navLink>
+                </b:navbarLinks>
+                <b:navbarLinks pull="right">
+                    <b:navLink value="Sign Up" icon-awesome="fa-user" outcome="signup" rendered="#{!currentUserBean.isLoggedIn}"></b:navLink>
+                    <b:navLink value="Log In" icon-awesome="fa-user" outcome="login" rendered="#{!currentUserBean.isLoggedIn}"></b:navLink>
+                    <b:dropMenu icon-awesome="fa-user" value="#{currentUserBean.helloMsg}" rendered="#{currentUserBean.isLoggedIn}">
+                        <b:navLink value="My Account" outcome="myaccount"></b:navLink>
+                        <b:navLink value="My Pets" outcome="mypets?blabal=bla"></b:navLink>
+                        <b:navCommandLink value="Log Out" action="#{currentUserBean.logout}"></b:navCommandLink>
+                    </b:dropMenu>
+                </b:navbarLinks>
+            </b:navBar>
+        </h:form>
+        <b:container>
+            <ui:insert name = "content">			
+                <h:form>
+                    <h1>HOME PAGE</h1>
+                </h:form>
+            </ui:insert>
+        </b:container>
+    </h:body>
+</html>

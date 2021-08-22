@@ -1,0 +1,81 @@
+/* error message style */
+.error { 
+    color: #dc6f6f;
+    font-size: 10px;
+    max-width: 300px;
+}
+
+/* column header style */
+.header
+{ 
+    background-color: steelblue;
+    color: white;
+    text-align: left;
+}
+
+/* row styles */
+.oddRows
+{
+    padding-left: 5px;
+    background-color: lightcyan;
+}
+.evenRows
+{
+    padding-left: 5px;
+    background-color: lightskyblue;
+}
+
+/* table style */
+.table
+{
+    width: 750px;
+}
+
+.appForm {
+    width:100%; 
+    display: flex;
+    justify-content: center;
+}
+
+.appFormContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.appFormContainer h1 {
+    text-align: center;
+}
+
+.appFormContainer .inputContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 5px;
+    width:300px;
+}
+
+.appFormGroup {
+    display: flex;
+    gap: 22px;
+}
+
+.petImage {
+    width: 200px;
+}
+
+#myPetsForm h1 {
+    width: 100%;
+    text-align: center;
+}
+
+.imageButtonsContainer {
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+
