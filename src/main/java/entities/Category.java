@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
 public class Category implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private Collection<Pet> petCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -40,8 +43,6 @@ public class Category implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    private Collection<Pet> petCollection;
 
     public Category() {
     }
@@ -56,15 +57,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @XmlTransient
-    public Collection<Pet> getPetCollection() {
-        return petCollection;
-    }
-
-    public void setPetCollection(Collection<Pet> petCollection) {
-        this.petCollection = petCollection;
     }
 
     @Override
@@ -90,6 +82,15 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return "entities.Category[ name=" + name + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Pet> getPetCollection() {
+        return petCollection;
+    }
+
+    public void setPetCollection(Collection<Pet> petCollection) {
+        this.petCollection = petCollection;
     }
     
 }

@@ -1,70 +1,70 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <ui:composition template="index.xhtml" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-   <ui:define name="content">
-       <h:form styleClass="appForm">
-     <div class="appFormContainer">
-     <h1>Sign Up</h1>
-        <div class="inputContainer">
-            <h:inputText id="emailInput" required="true"
-               requiredMessage="Please enter email"
-               value="#{signupPageBean.email}" maxlength="30" pt:placeholder="Email">
-            </h:inputText>
-            <h:message for="emailInput" styleClass="error"/>
-        </div>
-        <div class="inputContainer">
-          <h:inputSecret id="passwordInput" required="true"
-             requiredMessage="Please enter password" redisplay="true"
-             value="#{signupPageBean.password}" maxlength="100" pt:placeholder="Password">
-          </h:inputSecret>
-          <h:message for="passwordInput" styleClass="error"/>
-        </div>
-        <div class="inputContainer">
-            <h:inputText id="firstNameInput" required="true"
-               requiredMessage="Please enter first name"
-               validatorMessage="First Name must be fewer than 30 characters"
-               value="#{signupPageBean.firstName}" pt:placeholder="First Name">
-                <f:validateLength maximum="30" />
-            </h:inputText>
-            <h:message for="firstNameInput" styleClass="error"/>
-        </div>
-        <div class="inputContainer">
-            <h:inputText id="lastNameInput"
-               value="#{signupPageBean.lastName}" pt:placeholder="Last Name"
-               validatorMessage="Last Name must be fewer than 30 characters">
-                <f:validateLength maximum="30" />
-            </h:inputText>
-            <h:message for="lastNameInput" styleClass="error"/>
-        </div>
-        <div class="inputContainer">
-            <h:inputText id="addressInput"
-               value="#{signupPageBean.address}" pt:placeholder="Address: Country, City, Street no."
-               validatorMessage="Address must be fewer than 100 characters">
-                <f:validateLength maximum="100" />
-            </h:inputText>
-            <h:message for="addressInput" styleClass="error"/>
-        </div>
-         <div class="inputContainer">
-             <b:selectOneMenu value="#{signupPageBean.gender}">
-                <f:selectItem itemLabel="(Gender)" itemValue="" />
-                <f:selectItem itemLabel="Male" itemValue="male" />
-                <f:selectItem itemLabel="Female" itemValue="female" />
-            </b:selectOneMenu>
-        </div>
-        <div class="inputContainer">
-            <h:inputTextarea id="aboutInput" cols="50" rows="10"
-               value="#{signupPageBean.about}" pt:placeholder="Write something about yourself">
-            </h:inputTextarea>
-        </div>
-        <h:commandButton id="savebtn" value="Sign Up" action="#{signupPageBean.doRegister}"/>
-        <h:outputText id="errorText" escape="false"
-            value="#{signupPageBean.error}" styleClass="error"/>
-     </div>
-     </h:form>
-   </ui:define>
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form styleClass="appForm">
+            <div class="appFormContainer">
+                <h1 class="title">Sign Up</h1>
+                <div class="inputContainer">
+                    <p:inputText id="emailInput" required="true"
+                                 requiredMessage="Please enter email"
+                                 value="#{signupPageBean.email}" maxlength="30" placeholder="Email">
+                    </p:inputText>
+                    <h:message for="emailInput" styleClass="error"/>
+                </div>
+                <div class="inputContainer">
+                    <p:password id="passwordInput" required="true"
+                                   requiredMessage="Please enter password" redisplay="true"
+                                   value="#{signupPageBean.password}" maxlength="100" placeholder="Password"/>
+                    <p:message for="passwordInput" styleClass="error"/>
+                </div>
+                <div class="inputContainer">
+                    <p:inputText id="firstNameInput" required="true"
+                                 requiredMessage="Please enter first name"
+                                 validatorMessage="First Name must be fewer than 30 characters"
+                                 value="#{signupPageBean.firstName}" placeholder="First Name">
+                        <f:validateLength maximum="30" />
+                    </p:inputText>
+                    <h:message for="firstNameInput" styleClass="error"/>
+                </div>
+                <div class="inputContainer">
+                    <p:inputText id="lastNameInput"
+                                 value="#{signupPageBean.lastName}" placeholder="Last Name"
+                                 validatorMessage="Last Name must be fewer than 30 characters">
+                        <f:validateLength maximum="30" />
+                    </p:inputText>
+                    <p:message for="lastNameInput" styleClass="error"/>
+                </div>
+                <div class="inputContainer">
+                    <p:inputText id="addressInput"
+                                 value="#{signupPageBean.address}" placeholder="Address: Country, City, Street no."
+                                 validatorMessage="Address must be fewer than 100 characters">
+                        <f:validateLength maximum="100" />
+                    </p:inputText>
+                    <p:message for="addressInput" styleClass="error"/>
+                </div>
+                <div class="inputContainer">
+                    <p:selectOneMenu id="option" value="#{signupPageBean.gender}">
+                        <f:selectItem itemLabel="(Gender)" itemValue=""/>
+                        <f:selectItem itemLabel="Male" itemValue="male"/>
+                        <f:selectItem itemLabel="Female" itemValue="female"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="inputContainer">
+                    <p:inputTextarea id="aboutInput" cols="50" rows="10" maxlength="100"
+                                     value="#{signupPageBean.about}" placeholder="Write something about yourself"
+                                     counterTemplate="{0} characters remaining." autoResize="false" counter="display">
+                    </p:inputTextarea>
+                    <p:outputLabel id="display" class="p-d-block" />
+                </div>
+                <p:commandButton id="savebtn" value="Sign Up" action="#{signupPageBean.doRegister}" ajax="true" update="errorText"/>
+                <p:outputLabel id="errorText" escape="false"
+                              value="#{signupPageBean.error}" styleClass="error"/>
+            </div>
+        </h:form>
+    </ui:define>
 </ui:composition>

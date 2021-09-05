@@ -29,7 +29,12 @@ public interface PetFacadeLocal {
     List<Pet> findRange(int[] range);
 
     int count();
-    
+
     List<Pet> getPetsByOwnerId(String id);
-    
+
+    List<Pet> getPetsByCategory(String categoryName);
+
+    List<Pet> getPetsByColor(String color);
+
+    List<Pet> getPetsByCategoryAndColor(String categoryName, String color);
 }

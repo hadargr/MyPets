@@ -6,6 +6,8 @@
 package services;
 
 import java.util.UUID;
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -21,6 +23,14 @@ public class Utils {
     
     public static String getRandomUUID() {
         return UUID.randomUUID().toString();
+    }
+    
+    public static void navigateToPage(String page) {
+        ConfigurableNavigationHandler configurableNavigationHandler
+                    = (ConfigurableNavigationHandler) FacesContext.getCurrentInstance()
+                            .getApplication().getNavigationHandler();
+
+            configurableNavigationHandler.performNavigation(page+"?faces-redirect=true");
     }
     
 }

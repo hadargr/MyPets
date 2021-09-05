@@ -9,6 +9,7 @@ import entities.Customer;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import static services.Utils.getRandomUUID;
 
 /**
@@ -16,6 +17,7 @@ import static services.Utils.getRandomUUID;
  * @author hadargr
  */
 @ManagedBean(name = "signupPageBean")
+@ViewScoped
 public class SignupPageBean implements Serializable {
     @ManagedProperty(value = "#{customerManagedBean}")
     private CustomerManagedBean customerManagedBean;

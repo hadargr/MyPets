@@ -10,12 +10,15 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import services.Utils;
 
 /**
  *
  * @author hadargr
  */
 @ManagedBean(name = "myAccountPageBean")
+@ViewScoped
 public class MyAccountPageBean implements Serializable {
 
     @ManagedProperty(value = "#{customerManagedBean}")
@@ -36,6 +39,9 @@ public class MyAccountPageBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        if (currentUserBean.getCurrentCustomer() == null) {
+            Utils.navigateToPage("index");
+        }
         email = currentUserBean.getCurrentCustomer().getEmail();
         firstName = currentUserBean.getCurrentCustomer().getFirstName();
         lastName = currentUserBean.getCurrentCustomer().getFamilyName();

@@ -30,11 +30,32 @@ public class PetFacade extends AbstractFacade<Pet> implements PetFacadeLocal {
     public PetFacade() {
         super(Pet.class);
     }
-    
+
+    @Override
     public List<Pet> getPetsByOwnerId(String id) {
-        TypedQuery<Pet> q = em.createQuery("SELECT p FROM Pet p JOIN Customer c ON p.ownerId=c WHERE c.id = :id", Pet.class);
-        q.setParameter("id", id);
+        TypedQuery<Pet> q = em.createQuery("SELECT p FROM Pet p JOIN p.ownerId c WHERE c.id = :ownerId", Pet.class);
+        q.setParameter("ownerId", id);
         return q.getResultList();
     }
-    
+
+    @Override
+    public List<Pet> getPetsByCategory(String categoryName) {
+        TypedQuery<Pet> q = em.createQuery("SELECT p FROM Pet p JOIN p.category c WHERE c.name = :categoryName", Pet.class);
+        q.setParameter("categoryName", categoryName);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Pet> getPetsByColor(String color) {
+        TypedQuery<Pet> q = em.createQuery("SELECT p FROM Pet p WHERE LOWER(p.color) LIKE '%"+color.toLowerCase()+"%'", Pet.class);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Pet> getPetsByCategoryAndColor(String categoryName, String color) {
+        TypedQuery<Pet> q = em.createQuery("SELECT p FROM Pet p JOIN p.category c WHERE c.name = :categoryName AND LOWER(p.color) LIKE '%"+color.toLowerCase()+"%'", Pet.class);
+        q.setParameter("categoryName", categoryName);
+        return q.getResultList();
+    }
+
 }

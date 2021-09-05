@@ -45,12 +45,12 @@ public class Pet implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "id")
     private String id;
-    @Size(max = 100)
-    @Column(name = "name")
-    private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(min = 1, max = 100)
+    @Column(name = "name")
+    private String name;
+    @Size(max = 2147483647)
     @Column(name = "gender")
     private String gender;
     @Column(name = "age")
@@ -78,9 +78,9 @@ public class Pet implements Serializable {
         this.id = id;
     }
 
-    public Pet(String id, String gender) {
+    public Pet(String id, String name) {
         this.id = id;
-        this.gender = gender;
+        this.name = name;
     }
 
     public String getId() {

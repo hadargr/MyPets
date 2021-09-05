@@ -1,77 +1,83 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:b="http://bootsfaces.net/ui"
-   xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-   xmlns:f="http://java.sun.com/jsf/core">
-   <h:head>
-      <title>My Account</title>
-   </h:head>
-   <h:body>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>My Account</title>
+    </h:head>
+    <h:body>
         <ui:composition template="index.xhtml">
-           <ui:define name="content">
-               <h:form styleClass="appForm">
-             <div class="appFormContainer">
-             <h1>My Account</h1>
-             <b:formGroup styleClass="appFormGroup">
-                    <div class="inputContainer">
-                        <b:inputText id="emailInput" required="true"
-                           requiredMessage="Please enter email"
-                           value="#{myAccountPageBean.email}" maxlength="30" label="Email">
-                        </b:inputText>
-                        <h:message for="emailInput" styleClass="error"/>
+            <ui:define name="content">
+                <h:form styleClass="appForm">
+                    <div class="appFormContainer">
+                        <h1>My Account</h1>
+                        <div class="myAccountGrid">
+                            <div class="inputContainer">
+                                <p:outputLabel for="emailInput" value="Email"/>
+                                <p:inputText id="emailInput" required="true"
+                                             requiredMessage="Please enter email"
+                                             value="#{myAccountPageBean.email}" maxlength="30">
+                                </p:inputText>
+                                <h:message for="emailInput" styleClass="error"/>
+                            </div>
+                            <div class="inputContainer">
+                                <p:outputLabel for="firstNameInput" value="First Name"/>
+                                <p:inputText id="firstNameInput" required="true"
+                                             requiredMessage="Please enter first name"
+                                             validatorMessage="First Name must be fewer than 30 characters"
+                                             value="#{myAccountPageBean.firstName}">
+                                    <f:validateLength maximum="30" />
+                                </p:inputText>
+                                <h:message for="firstNameInput" styleClass="error"/>
+                            </div>
+                            <div class="inputContainer">
+                                <p:outputLabel for="lastNameInput" value="Last Name"/>
+                                <p:inputText id="lastNameInput"
+                                             value="#{myAccountPageBean.lastName}"
+                                             validatorMessage="Last Name must be fewer than 30 characters">
+                                    <f:validateLength maximum="30" />
+                                </p:inputText>
+                                <h:message for="lastNameInput" styleClass="error"/>
+                            </div>
+                            <div class="inputContainer">
+                                <p:outputLabel for="lastNameInput" value="Address"/>
+                                <p:inputText id="addressInput"
+                                             value="#{myAccountPageBean.address}"
+                                             validatorMessage="Address must be fewer than 100 characters">
+                                    <f:validateLength maximum="100" />
+                                </p:inputText>
+                                <h:message for="addressInput" styleClass="error"/>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <p:outputLabel for="@next" value="Gender"/>
+                            <p:selectOneMenu id="option" value="#{myAccountPageBean.gender}">
+                                <f:selectItem itemLabel="(Gender)" itemValue=""/>
+                                <f:selectItem itemLabel="Male" itemValue="male"/>
+                                <f:selectItem itemLabel="Female" itemValue="female"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="inputContainer">
+                            <p:outputLabel for="aboutInput" value="About"/>
+                            <p:inputTextarea id="aboutInput" cols="50" rows="10" maxlength="100"
+                                             value="#{myAccountPageBean.about}" placeholder="Write something about yourself"
+                                             counterTemplate="{0} characters remaining." autoResize="false" counter="display">
+                            </p:inputTextarea>
+                            <h:outputText id="display" class="p-d-block" />
+                        </div>
+                        <div class="appFormGroup">
+                            <h:commandButton style="width: 300px" id="discardbtn" value="Discard Changes" actionListener="#{myAccountPageBean.doCancel}" type="reset">
+                            </h:commandButton>
+                            <h:commandButton style="width: 300px" id="savebtn" value="Save Changes" action="#{myAccountPageBean.doUpdate}"/>
+                        </div>
+                        <h:outputText id="errorText" escape="false"
+                                      value="#{myAccountPageBean.error}" styleClass="error"/>
                     </div>
-                    <div class="inputContainer">
-                        <b:inputText id="firstNameInput" required="true"
-                           requiredMessage="Please enter first name"
-                           validatorMessage="First Name must be fewer than 30 characters"
-                           value="#{myAccountPageBean.firstName}" label="First Name">
-                            <f:validateLength maximum="30" />
-                        </b:inputText>
-                        <h:message for="firstNameInput" styleClass="error"/>
-                    </div>
-                 </b:formGroup>
-                <b:formGroup styleClass="appFormGroup">
-                    <div class="inputContainer">
-                        <b:inputText id="lastNameInput"
-                           value="#{myAccountPageBean.lastName}" label="Last Name"
-                           validatorMessage="Last Name must be fewer than 30 characters">
-                            <f:validateLength maximum="30" />
-                        </b:inputText>
-                        <h:message for="lastNameInput" styleClass="error"/>
-                    </div>
-                    <div class="inputContainer">
-                        <b:inputText id="addressInput"
-                           value="#{myAccountPageBean.address}" label="Address"
-                           validatorMessage="Address must be fewer than 100 characters">
-                            <f:validateLength maximum="100" />
-                        </b:inputText>
-                        <h:message for="addressInput" styleClass="error"/>
-                    </div>
-                 </b:formGroup>
-                 <div class="inputContainer">
-                     <b:selectOneMenu value="#{myAccountPageBean.gender}">
-                        <f:selectItem itemLabel="(Gender)" itemValue="" />
-                        <f:selectItem itemLabel="Male" itemValue="male" />
-                        <f:selectItem itemLabel="Female" itemValue="female" />
-                    </b:selectOneMenu>
-                </div>
-                <div class="inputContainer">
-                    <b:inputTextarea id="aboutInput" span="50" rows="10"
-                       value="#{myAccountPageBean.about}" placeholder="Write something about yourself">
-                    </b:inputTextarea>
-                </div>
-               <b:formGroup styleClass="appFormGroup">
-                   <h:commandButton style="width: 300px" id="discardbtn" value="Discard Changes" actionListener="#{myAccountPageBean.doCancel}" type="reset">
-                   </h:commandButton>
-                    <h:commandButton style="width: 300px" id="savebtn" value="Save Changes" action="#{myAccountPageBean.doUpdate}"/>
-                 </b:formGroup>
-                    <h:outputText id="errorText" escape="false"
-                        value="#{myAccountPageBean.error}" styleClass="error"/>
-             </div>
-             </h:form>
-           </ui:define>
+                </h:form>
+            </ui:define>
         </ui:composition>
     </h:body>
 </html>

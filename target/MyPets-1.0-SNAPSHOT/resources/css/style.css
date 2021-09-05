@@ -4,31 +4,10 @@
     font-size: 10px;
     max-width: 300px;
 }
-
-/* column header style */
-.header
-{ 
-    background-color: steelblue;
-    color: white;
-    text-align: left;
-}
-
-/* row styles */
-.oddRows
-{
-    padding-left: 5px;
-    background-color: lightcyan;
-}
-.evenRows
-{
-    padding-left: 5px;
-    background-color: lightskyblue;
-}
-
-/* table style */
-.table
-{
-    width: 750px;
+.success { 
+    color: green;
+    font-size: 10px;
+    max-width: 300px;
 }
 
 .appForm {
@@ -48,7 +27,7 @@
     text-align: center;
 }
 
-.appFormContainer .inputContainer {
+.inputContainer {
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -63,6 +42,25 @@
 
 .petImage {
     width: 200px;
+    object-fit: cover;
+}
+
+.petImageContainer {
+    height: 270px;
+    display: flex;
+    align-items: center;
+    background-color: #dab8da;
+}
+
+.petInfo {
+    width: 200px;
+    background-color: #dab8da;
+    position: relative;
+    left: -222px;
+    border-top-right-radius: 70%;
+    border-top-left-radius: 70%;
+    height: 30%;
+    bottom: -70%;
 }
 
 #myPetsForm h1 {
@@ -78,4 +76,94 @@
     margin-top: 10px;
 }
 
+.title {
+    font-weight:bold; 
+}
+
+.myAccountGrid, .myPetsGrid, .singlePetGrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 10px;
+    grid-row-gap:10px;
+}
+
+.myPetsGrid {
+    margin: 20px;
+    grid-template-columns: auto auto auto;
+    grid-row-gap:20px;
+}
+
+.singlePetGrid {
+    grid-column-gap: 30px;
+}
+
+form {
+    font-size: 14px;
+
+}
+
+form label {
+    font-weight: bold;
+    color: #235b82;
+}
+
+.categoriesMenu {
+    background-color: #800080ab;
+}
+
+.ui-menu .ui-menuitem-link {
+    display: flex !important;
+    gap: 5px;
+}
+
+.ownerDetails {
+    grid-column-start: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.homePageBanner {
+    width:100%;
+    height: 250px;
+    position: relative;
+}
+
+.homePageBanner:before {
+    background-image: url(/MyPets/faces/javax.faces.resource/images/pets_background.jpeg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    content: "";
+    opacity: 0.6;
+}
+
+.homePageBanner h1 {
+    position: relative;
+    font-size: 40px;
+    text-align: center;
+    color: #5e0b5ecf;
+}
+
+.homePageOptions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.homePageOption {
+    width: 500px;
+    background: #702eb98a;
+    text-shadow: none;
+    box-shadow: none;
+    border: none;
+}
 

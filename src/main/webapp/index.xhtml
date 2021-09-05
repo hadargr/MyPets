@@ -4,37 +4,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>My Pets</title>
         <h:outputStylesheet name="style.css" library="css"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/5.8.2/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.8.2/css/v4-shims.min-jsf.css" />
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
     </h:head>
-    <h:body style="padding: 60px;">
-        <h:form id="mainForm">
-            <b:navBar inverse="true" fixed="top" sticky="true">
-                <b:navbarLinks>
-                    <b:navLink value="Home Is Where Your Pet Is" icon-awesome="fa-paw" outcome="index"></b:navLink>
-                </b:navbarLinks>
-                <b:navbarLinks pull="right">
-                    <b:navLink value="Sign Up" icon-awesome="fa-user" outcome="signup" rendered="#{!currentUserBean.isLoggedIn}"></b:navLink>
-                    <b:navLink value="Log In" icon-awesome="fa-user" outcome="login" rendered="#{!currentUserBean.isLoggedIn}"></b:navLink>
-                    <b:dropMenu icon-awesome="fa-user" value="#{currentUserBean.helloMsg}" rendered="#{currentUserBean.isLoggedIn}">
-                        <b:navLink value="My Account" outcome="myaccount"></b:navLink>
-                        <b:navLink value="My Pets" outcome="mypets?blabal=bla"></b:navLink>
-                        <b:navCommandLink value="Log Out" action="#{currentUserBean.logout}"></b:navCommandLink>
-                    </b:dropMenu>
-                </b:navbarLinks>
-            </b:navBar>
+    <h:body style="font-family: Arial; margin: 0px;">
+        <h:form>
+            <p:menubar id="mainMenu" style="font-size: 16px;">
+                <p:menuitem value="Home Is Where Your Pet Is" outcome="index" icon="fa fa-fw fa-home" />
+                <p:menuitem value="Find a pet" outcome="findpet" icon="fa fa-fw fa-paw" />
+                <p:menuitem style="position: absolute; right: 100px;" value="Sign Up"  icon="far fa-fw fa-user" outcome="signup" rendered="#{!currentUserBean.isLoggedIn}" />
+                <p:menuitem style="position: absolute; right: 4px;" value="Log In" icon="fa fa-fw fa-user" outcome="login" rendered="#{!currentUserBean.isLoggedIn}" />
+                <p:submenu style="position: absolute; right: 4px;" icon="fa fa-fw fa-user" label="#{currentUserBean.helloMsg}" rendered="#{currentUserBean.isLoggedIn}">
+                    <p:menuitem value="My Account" outcome="myaccount"/>
+                    <p:menuitem value="My Pets" outcome="mypets" />
+                    <p:menuitem value="Log Out" action="#{currentUserBean.logout}" />
+                </p:submenu>
+            </p:menubar>
+            <p:sticky target="mainMenu"/>
         </h:form>
-        <b:container>
+        <div>
             <ui:insert name = "content">			
                 <h:form>
-                    <h1>HOME PAGE</h1>
+                    <div class="homePageBanner">
+                        <h1>Find your new best friend here</h1>
+                        <h1 style="font-size: 32px;">Or find a LOVING HOME for someone special</h1>
+                    </div>
+                    <div style="margin-top: 20px;" class="homePageOptions">
+                        <p:commandButton value="Signup to give away or adopt a pet" styleClass="homePageOption" rendered="#{currentUserBean.currentCustomer == null}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
+                        <p:commandButton value="Manage your pets" styleClass="homePageOption" rendered="#{currentUserBean.currentCustomer != null}" icon="fa fa-fw fa-arrow-right"/>
+                    </div>
                 </h:form>
             </ui:insert>
-        </b:container>
+        </div>
     </h:body>
 </html>

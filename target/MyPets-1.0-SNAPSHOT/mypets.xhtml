@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>My Pets</title>
@@ -11,22 +11,33 @@
     <h:body>
         <ui:composition template="index.xhtml">
             <ui:define name="content">
-                <h:form enctype="multipart/form-data" styleClass="appForm" id="myPetsForm">
-                    <b:container>
+                <h:form styleClass="appForm" id="myPetsForm">
+                    <div style="width: 100%;">
                         <h1>My Pets</h1>
-                        <ui:repeat value="#{myPetsPageBean.currentUserPets}" var="pet">
-                            <b:formGroup styleClass="appFormGroup">
-                                <b:image styleClass="petImage" name="#{pet.photoFileName}" rendered="#{pet.photoFileName != null}" />
-                                <b:image styleClass="petImage" name="/images/empty.jpeg" rendered="#{pet.photoFileName == null}" />
-                                <div>
-                                    <b:commandButton style="width:100px; margin-bottom:10px; text-align: start;" value="Edit" action="#{myPetsPageBean.editPet(pet)}" iconAwesome="fa-file"></b:commandButton>
-                                    <br></br>
-                                    <b:commandButton style="width:100px; text-align: start;" value="Remove" action="#{myPetsPageBean.removePet(pet)}" iconAwesome="fa-trash"></b:commandButton>
+                        <p:commandButton value="Add pet" icon="fa fa-plus-circle" style="margin-left:20px;" action="#{myPetsPageBean.addPet()}"/>
+                        <div class="myPetsGrid">
+                            <ui:repeat value="#{myPetsPageBean.currentUserPets}" var="pet">
+                                <div class="appFormGroup">
+                                    <p:graphicImage styleClass="petImage" name="/images/#{pet.photoFileName}" rendered="#{pet.photoFileName != null}" />
+                                    <p:graphicImage styleClass="petImage" name="/images/empty.jpeg" rendered="#{pet.photoFileName == null}" />
+                                    <div>
+                                        <h3>#{pet.name}</h3>
+                                        <br></br>
+                                        <p:commandButton style="width:100px; margin-bottom:10px; text-align: start;" value="Edit" action="#{myPetsPageBean.editPet(pet)}" icon="fa fa-file"></p:commandButton>
+                                        <br></br>
+                                        <p:commandButton style="width:100px; text-align: start;" value="Remove" icon="fa fa-trash">
+                                            <p:confirm header="Remove ${pet.name}" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+                                            <f:ajax event="click" execute="myPetsForm" render="myPetsForm" listener="#{myPetsPageBean.removePet(pet)}"/>
+                                        </p:commandButton>
+                                    </div>
                                 </div>
-                            </b:formGroup>
-                        </ui:repeat>
-                        <b:commandButton value="Add pet" iconAwesome="fa-plus-circle" look="primary" />
-                    </b:container>
+                            </ui:repeat>
+                        </div>
+                    </div>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
                 </h:form>
             </ui:define>
         </ui:composition>

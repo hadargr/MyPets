@@ -7,14 +7,19 @@ package beans;
 
 import entities.Customer;
 import java.io.Serializable;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import services.Utils;
 
 /**
  *
  * @author hadargr
  */
 @ManagedBean(name = "loginPageBean")
+@ViewScoped
 public class LoginPageBean implements Serializable {
 
     @ManagedProperty(value = "#{customerManagedBean}")
@@ -62,28 +67,27 @@ public class LoginPageBean implements Serializable {
         System.out.println(error);
     }
 
-    public String doLogin() {
+    public void doLogin() {
         try {
             Customer res;
             try {
                 res = customerManagedBean.customersFacade.getByEmail(email);
             } catch (Exception e1) {
                 setError("There is no user with that email. You should Sign Up or try a different email.");
-                return "login";
+                return;
             }
             try {
                 res = customerManagedBean.customersFacade.customerLogin(email, password);
             } catch (Exception e2) {
                 setError("Your password is not correct. Try again.");
-                return "login";
+                return;
             }
             System.out.println("doLogin success");
             System.out.println(res);
             currentUserBean.setCurrentCustomer(res);
-            return "index?faces-redirect=true";
+            Utils.navigateToPage("index");
         } catch (Exception e) {
             System.out.println("doLogin error");
         }
-        return "login";
     }
 }

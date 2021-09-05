@@ -1,47 +1,106 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Single Pet</title>
     </h:head>
     <h:body>
         <ui:composition template="index.xhtml">
             <ui:define name="content">
-                <h:form enctype="multipart/form-data" styleClass="appForm" id="myPetsForm">
-                    <b:container>
-                        <h1>Edit Pet</h1>
-                        <b:container>
-                            <b:image styleClass="petImage" name="#{singlePetPageBean.selectedPet.photoFileName}" rendered="#{singlePetPageBean.selectedPet.photoFileName != null}" />
-                            <b:image styleClass="petImage" name="/images/empty.jpeg" rendered="#{singlePetPageBean.selectedPet.photoFileName == null}" />
-                            <div class="imageButtonsContainer">
-                                <h:inputFile value="#{singlePetPageBean.file}"/>
-                                <h:commandButton style="width: 70px;" value="Update" action="#{singlePetPageBean.processUpload()}"></h:commandButton>
-                            </div>
-                        </b:container>
-                        <b:formGroup styleClass="appFormGroup">
+                <h1 style="text-align: center;">#{singlePetPageBean.enableEditing ? "Edit Pet" : "Pet Info"}</h1>
+                <div style="display: flex; margin-top: 50px; margin-left: 30px">
+                    <h:form enctype="multipart/form-data" id="singlePetImageForm" style="width: 400px;">
+                        <div style="display: flex; height: 100%; align-items: start; flex-direction: column; margin-right: 20px;">
+                            <p:graphicImage styleClass="petImage" name="/images/#{singlePetPageBean.photoFileName}"  />
+                            <p:outputPanel styleClass="imageButtonsContainer" rendered="#{singlePetPageBean.enableEditing}">
+
+                                <h:inputFile id="fileInput" value="#{singlePetPageBean.file}" style="width: 250px;" required="true" requiredMessage="Choose a file" rendered="#{singlePetPageBean.enableEditing}"/>
+                                <p:commandButton value="Upload image" style="width: 200px;" >
+                                    <f:ajax event="click" execute="singlePetImageForm" render="singlePetImageForm" listener="#{singlePetPageBean.processUpload()}"/>
+                                </p:commandButton>
+                                <h:message for="fileInput" styleClass="error"/>
+                            </p:outputPanel>
+                        </div>
+                    </h:form>
+                    <h:form enctype="multipart/form-data" id="singlePetForm" style="margin-bottom: 50px;">
+                        <div class="singlePetGrid">
                             <div class="inputContainer">
-                                <b:inputText id="nameInput" required="true"
+                                <p:outputLabel for="nameInput" value="Name"/>
+                                <p:inputText id="nameInput" required="true"
                                              requiredMessage="Please enter pet's name"
-                                             value="#{singlePetPageBean.selectedPet.name}" maxlength="30" label="Pet's Name">
-                                </b:inputText>
+                                             value="#{singlePetPageBean.name}" maxlength="30" disabled="${!singlePetPageBean.enableEditing}">
+                                </p:inputText>
                                 <h:message for="nameInput" styleClass="error"/>
                             </div>
                             <div class="inputContainer">
-                                <b:inputText id="firstNameInput" required="true"
-                                             requiredMessage="Please enter first name"
-                                             validatorMessage="First Name must be fewer than 30 characters"
-                                             value="#{myAccountPageBean.firstName}" label="First Name">
-                                    <f:validateLength maximum="30" />
-                                </b:inputText>
-                                <h:message for="firstNameInput" styleClass="error"/>
+                                <p:outputLabel for="categoriesSelector" value="Category"/>
+                                <p:selectOneMenu id="categoriesSelector" value="#{singlePetPageBean.categoryName}" required="true"
+                                                 requiredMessage="Please select category" disabled="${!singlePetPageBean.enableEditing}">
+                                    <f:selectItems value="#{singlePetPageBean.categories}"  var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                                </p:selectOneMenu>
+                                <h:message for="categoriesSelector" styleClass="error"/>
                             </div>
-                        </b:formGroup>
-                    </b:container>
-                </h:form>
+                            <div class="inputContainer">
+                                <p:outputLabel for="ageInput" value="Age"/>
+                                <p:inputText id="ageInput"
+                                             validatorMessage="Age has to be between 0 and 100 years"
+                                             value="#{singlePetPageBean.age}" disabled="${!singlePetPageBean.enableEditing}">
+                                    <f:validateLongRange minimum="0" maximum="100" />
+                                </p:inputText>
+                                <h:message for="ageInput" styleClass="error"/>
+                            </div>
+                            <div class="inputContainer">
+                                <p:outputLabel for="@next" value="Gender"/>
+                                <p:selectOneMenu value="#{singlePetPageBean.gender}" disabled="${!singlePetPageBean.enableEditing}">
+                                    <f:selectItem itemLabel="(Gender)" itemValue=""/>
+                                    <f:selectItem itemLabel="Male" itemValue="male" />
+                                    <f:selectItem itemLabel="Female" itemValue="female" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="inputContainer">
+                                <p:outputLabel for="colorInput" value="Color"/>
+                                <p:inputText id="colorInput"
+                                             value="#{singlePetPageBean.color}" maxlength="30" disabled="${!singlePetPageBean.enableEditing}">
+                                </p:inputText>
+                            </div>
+                            <div class="inputContainer" style="grid-column-start: 1;">
+                                <p:outputLabel for="aboutInput" value="About"/>
+                                <p:inputTextarea id="aboutInput" cols="50" rows="10" maxlength="100"
+                                                 value="#{singlePetPageBean.about}" placeholder="Write something about your pet"
+                                                 counterTemplate="{0} characters remaining." autoResize="false" counter="display" disabled="${!singlePetPageBean.enableEditing}">
+                                </p:inputTextarea>
+                                <h:outputText id="display" class="p-d-block" rendered="#{singlePetPageBean.enableEditing}"/>
+                            </div>
+                            <p:outputPanel style="grid-column-start: 1; margin-top: 20px;" rendered="#{singlePetPageBean.enableEditing}">
+                                <p:commandButton value="Save" >
+                                    <p:ajax event="click" update="statusText" listener="#{singlePetPageBean.saveData}"/>
+                                </p:commandButton>
+                                <div style="margin-top: 5px;">
+                                    <h:outputText id="statusText" escape="false"
+                                                  value="#{singlePetPageBean.statusText}" styleClass="#{singlePetPageBean.outputTextClass}"/>
+                                    <p:poll interval="5" listener="#{singlePetPageBean.updateStatusText}" update="statusText"/>
+                                </div>
+                            </p:outputPanel>
+                            <p:outputPanel styleClass="ownerDetails" rendered="#{!singlePetPageBean.enableEditing}">
+                                <h3>Owner details:</h3>
+                                <p:outputLabel value="#{singlePetPageBean.ownerId.firstName} #{singlePetPageBean.ownerId.familyName}"/>
+                                <p:link href="mailto: #{singlePetPageBean.ownerId.email}">#{singlePetPageBean.ownerId.email}</p:link>
+                                <p:outputPanel rendered="#{singlePetPageBean.shouldRenderAboutOwner()}" style="margin-top: 10px;">
+                                    <p:outputLabel value="About owner:"/>
+                                    <br/>
+                                    <span>
+                                        #{singlePetPageBean.ownerId.about}
+                                    </span>
+                                </p:outputPanel>
+                            </p:outputPanel>
+                        </div>
+                    </h:form>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>
