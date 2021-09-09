@@ -37,8 +37,11 @@
                         <h1 style="font-size: 32px;">Or find a LOVING HOME for someone special</h1>
                     </div>
                     <div style="margin-top: 20px;" class="homePageOptions">
-                        <p:commandButton value="Signup to give away or adopt a pet" styleClass="homePageOption" rendered="#{currentUserBean.currentCustomer == null}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
-                        <p:commandButton value="Manage your pets" styleClass="homePageOption" rendered="#{currentUserBean.currentCustomer != null}" icon="fa fa-fw fa-arrow-right"/>
+                        <p:commandButton value="Signup to give away or adopt a pet" styleClass="homePageOption" action="#{navigationBean.navigateToSignup()}" rendered="#{currentUserBean.currentCustomer == null}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
+                        <p:commandButton value="Manage your pets" styleClass="homePageOption" action="#{navigationBean.navigateToMyPets()}" rendered="#{currentUserBean.currentCustomer != null}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
+                        <p:commandButton value="Find a Dog" styleClass="homePageOption" action="#{navigationBean.navigateToFindDog()}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
+                        <p:commandButton value="Find a Cat" styleClass="homePageOption" action="#{navigationBean.navigateToFindCat()}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
+                        <p:commandButton value="Find Other Pets" styleClass="homePageOption" action="#{navigationBean.navigateToFindPet()}" icon="fa fa-fw fa-arrow-right" iconPos="right"/>
                     </div>
                 </h:form>
             </ui:insert>

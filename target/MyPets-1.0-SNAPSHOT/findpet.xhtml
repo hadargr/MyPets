@@ -23,16 +23,15 @@
                 </p:submenu>
             </p:menubar>
             <div class="myPetsGrid">
-                <ui:repeat value="#{findPetBean.currentPets}" var="pet">
+                <c:forEach items="#{findPetBean.currentPets}" var="pet"> 
                     <div class="appFormGroup">
                         <div class="petImageContainer">
                             <p:graphicImage styleClass="petImage" name="/images/#{pet.photoFileName}" rendered="#{pet.photoFileName != null}" />
                             <p:graphicImage styleClass="petImage" name="/images/empty.jpeg" rendered="#{pet.photoFileName == null}" />
                         </div>
-
                         <p:commandButton styleClass="petInfo" value="#{pet.name}" action="#{findPetBean.selectPet(pet)}"></p:commandButton> 
                     </div>
-                </ui:repeat>
+                </c:forEach>
             </div>
         </h:form>
     </ui:define>

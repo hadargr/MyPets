@@ -14,23 +14,31 @@ import javax.faces.context.FacesContext;
  * @author hadargr
  */
 public class Utils {
+
     public static FileUploader fileUploader = new FileUploader();
-    private Utils() { }
-    
+
+    private Utils() {
+    }
+
     public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
-    
+
     public static String getRandomUUID() {
         return UUID.randomUUID().toString();
     }
-    
-    public static void navigateToPage(String page) {
-        ConfigurableNavigationHandler configurableNavigationHandler
-                    = (ConfigurableNavigationHandler) FacesContext.getCurrentInstance()
-                            .getApplication().getNavigationHandler();
 
-            configurableNavigationHandler.performNavigation(page+"?faces-redirect=true");
+    public static void navigateToPage(String page, String... parameters) {
+        ConfigurableNavigationHandler configurableNavigationHandler
+                = (ConfigurableNavigationHandler) FacesContext.getCurrentInstance()
+                        .getApplication().getNavigationHandler();
+        String params = "";
+        if (parameters != null && parameters.length % 2 == 0) {
+            for (int i = 0; i < parameters.length; i += 2) {
+                params += "&" + parameters[i] + "=" + parameters[i + 1];
+            }
+        }
+        configurableNavigationHandler.performNavigation(page + "?faces-redirect=true" + params);
     }
-    
+
 }

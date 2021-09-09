@@ -13,11 +13,14 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import services.Utils;
 
 /**
  *
@@ -39,17 +42,37 @@ public class FindPetBean implements Serializable {
     private Category selectedCategory = null;
     private String selectedColor = "ALL";
     private String menuLabel = "ALL";
+    private final Map<String, String> params;
 
     public FindPetBean() {
+        params = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap();
     }
 
     @PostConstruct
     public void init() {
+        String category = params.get("category");
+        String color = params.get("color");
         try {
             categories = categoriesFacade.findAll();
             currentPets = petsFacade.findAll();
             petsColors = Arrays.asList("ORANGE", "YELLOW", "WHITE", "BLACK", "GRAY", "GREY", "GREEN", "BLUE", "BROW", "ALL");
             Collections.sort(petsColors);
+            if (category != null && category.length() > 0) {
+                int index = categories.indexOf(new Category(category));
+                if (index > -1) {
+                    this.selectedCategory = categories.get(index);
+                    menuLabel = category;
+                }
+            }
+            if (color != null && color.length() > 0) {
+                int index = petsColors.indexOf(color);
+                if (index > -1) {
+                    this.selectedColor = petsColors.get(index);
+                }
+            }
+            updatePetsList();
+
         } catch (Exception e) {
             System.out.println("error in PostConstruct FindPetBean");
             System.out.println(e.getCause());
@@ -101,8 +124,20 @@ public class FindPetBean implements Serializable {
     }
 
     public void setSelectedColor(String selectedColor) {
-        this.selectedColor = selectedColor;
-        updatePetsList();
+        if (selectedCategory != null && !menuLabel.equals("ALL")) {
+            if (selectedColor.equals("ALL")) {
+                Utils.navigateToPage("findpet", "category", selectedCategory.getName());
+                return;
+            }
+            Utils.navigateToPage("findpet", "category", selectedCategory.getName(), "color", selectedColor);
+            return;
+        }
+        if (selectedColor.equals("ALL")) {
+            Utils.navigateToPage("findpet");
+            return;
+        }
+        Utils.navigateToPage("findpet", "color", selectedColor);
+
     }
 
     public List<String> getPetsColors() {
@@ -114,15 +149,19 @@ public class FindPetBean implements Serializable {
     }
 
     public void selectCategory(Category newCategory) {
-        this.selectedCategory = newCategory;
-        menuLabel = selectedCategory.getName();
-        updatePetsList();
+        if (selectedColor != null && !selectedColor.equals("ALL")) {
+            Utils.navigateToPage("findpet", "category", newCategory.getName(), "color", selectedColor);
+            return;
+        }
+        Utils.navigateToPage("findpet", "category", newCategory.getName());
     }
 
     public void selectAll() {
-        this.selectedCategory = null;
-        menuLabel = "ALL";
-        updatePetsList();
+        if (selectedColor != null && !selectedColor.equals("ALL")) {
+            Utils.navigateToPage("findpet", "color", selectedColor);
+            return;
+        }
+        Utils.navigateToPage("findpet");
     }
 
     private void updatePetsList() {
@@ -168,7 +207,7 @@ public class FindPetBean implements Serializable {
         return icon;
     }
 
-    public String selectPet(Pet p) {
-        return "singlepet?faces-redirect=true&pet=" + p.getId();
+    public void selectPet(Pet p) {
+        Utils.navigateToPage("singlepet", "pet", p.getId());
     }
 }
