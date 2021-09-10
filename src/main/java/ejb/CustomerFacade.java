@@ -15,7 +15,7 @@ import javax.persistence.TypedQuery;
  *
  * @author hadargr
  */
-@Stateless(mappedName="customerFacade")
+@Stateless(mappedName = "customerFacade")
 public class CustomerFacade extends AbstractFacade<Customer> implements CustomerFacadeLocal {
 
     @PersistenceContext(unitName = "com.mycompany_MyPets_war_1.0-SNAPSHOTPU")
@@ -29,12 +29,14 @@ public class CustomerFacade extends AbstractFacade<Customer> implements Customer
     public CustomerFacade() {
         super(Customer.class);
     }
-    
+
+    @Override
     public Customer customerLogin(String email, String password) {
-        TypedQuery<Customer> q = em.createQuery("SELECT c FROM Customer c WHERE c.email=\"" + email +"\" AND c.password=\"" + password +"\"", Customer.class);
+        TypedQuery<Customer> q = em.createQuery("SELECT c FROM Customer c WHERE c.email=\"" + email + "\" AND c.password=\"" + password + "\"", Customer.class);
         return q.getSingleResult();
     }
 
+    @Override
     public Customer getByEmail(String email) {
         TypedQuery<Customer> q = em.createNamedQuery("Customer.findByEmail", Customer.class);
         return q.setParameter("email", email).getSingleResult();

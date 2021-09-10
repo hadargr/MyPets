@@ -5,13 +5,13 @@
  */
 package beans;
 
+import ejb.CustomerFacadeLocal;
 import entities.Customer;
 import java.io.Serializable;
-import javax.faces.application.ConfigurableNavigationHandler;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import services.Utils;
 
 /**
@@ -22,8 +22,8 @@ import services.Utils;
 @ViewScoped
 public class LoginPageBean implements Serializable {
 
-    @ManagedProperty(value = "#{customerManagedBean}")
-    private CustomerManagedBean customerManagedBean;
+    @EJB
+    CustomerFacadeLocal customersFacade;
     @ManagedProperty(value = "#{currentUserBean}")
     private CurrentUserBean currentUserBean;
 
@@ -32,10 +32,6 @@ public class LoginPageBean implements Serializable {
     private String error;
 
     public LoginPageBean() {
-    }
-
-    public void setCustomerManagedBean(CustomerManagedBean bean) {
-        this.customerManagedBean = bean;
     }
 
     public void setCurrentUserBean(CurrentUserBean bean) {
@@ -71,13 +67,13 @@ public class LoginPageBean implements Serializable {
         try {
             Customer res;
             try {
-                res = customerManagedBean.customersFacade.getByEmail(email);
+                customersFacade.getByEmail(email);
             } catch (Exception e1) {
                 setError("There is no user with that email. You should Sign Up or try a different email.");
                 return;
             }
             try {
-                res = customerManagedBean.customersFacade.customerLogin(email, password);
+                res = customersFacade.customerLogin(email, password);
             } catch (Exception e2) {
                 setError("Your password is not correct. Try again.");
                 return;

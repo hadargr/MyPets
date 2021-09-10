@@ -8,9 +8,7 @@ package beans;
 import entities.Customer;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import services.CurrentUserChangeListener;
 
 /**
  *
@@ -20,11 +18,7 @@ import services.CurrentUserChangeListener;
 @SessionScoped
 public class CurrentUserBean implements Serializable {
 
-    @ManagedProperty(value = "#{customerManagedBean}")
-    private CustomerManagedBean customerManagedBean;
     private Customer currentCustomer = null;
-    private String password;
-    private CurrentUserChangeListener listener = new CurrentUserChangeListener();
     private String status = "loggedout";
 
     public CurrentUserBean() {
@@ -38,21 +32,12 @@ public class CurrentUserBean implements Serializable {
         return currentCustomer.getId();
     }
 
-    public CurrentUserChangeListener getListener() {
-        return listener;
-    }
-
     public void setCurrentCustomer(Customer c) {
         this.currentCustomer = c;
     }
 
     public String logout() {
         setCurrentCustomer(null);
-        new Thread(new Runnable() {
-            public void run() {
-                listener.currentUserChanged();
-            }
-        }).start();
         return "index?faces-redirect=true";
     }
 
@@ -73,9 +58,5 @@ public class CurrentUserBean implements Serializable {
             return "";
         }
         return "Hello " + currentCustomer.getFirstName();
-    }
-
-    public void setCustomerManagedBean(CustomerManagedBean bean) {
-        this.customerManagedBean = bean;
     }
 }

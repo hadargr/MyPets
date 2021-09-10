@@ -6,6 +6,7 @@
 package beans;
 
 import ejb.CategoryFacadeLocal;
+import ejb.PetFacadeLocal;
 import entities.Category;
 import entities.Customer;
 import entities.Pet;
@@ -15,13 +16,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
-import org.primefaces.event.FileUploadEvent;
 import services.FileUploader;
 import services.Utils;
 import static services.Utils.getRandomUUID;
@@ -36,8 +35,8 @@ public class SinglePetPageBean implements Serializable {
 
     @EJB
     CategoryFacadeLocal categoriesFacade;
-    @ManagedProperty(value = "#{petManagedBean}")
-    private PetManagedBean petManagedBean;
+    @EJB
+    PetFacadeLocal petsFacade;
     @ManagedProperty(value = "#{currentUserBean}")
     private CurrentUserBean currentUserBean;
     private boolean isNew = false;
@@ -77,7 +76,7 @@ public class SinglePetPageBean implements Serializable {
                 selectedPet.setOwnerId(currentUserBean.getCurrentCustomer());
                 enableEditing = true;
             } else {
-                selectedPet = petManagedBean.getPetById(petId);
+                selectedPet = petsFacade.find(petId);
                 categoryName = selectedPet.getCategory().getName();
                 enableEditing = currentUserBean.getCurrentCustomer() != null && currentUserBean.getCurrentCustomer().getId() == selectedPet.getOwnerId().getId();
             }
@@ -184,10 +183,6 @@ public class SinglePetPageBean implements Serializable {
         return params.get("pet");
     }
 
-    public void setPetManagedBean(PetManagedBean bean) {
-        this.petManagedBean = bean;
-    }
-
     public void setCurrentUserBean(CurrentUserBean bean) {
         this.currentUserBean = bean;
     }
@@ -253,11 +248,11 @@ public class SinglePetPageBean implements Serializable {
             selectedPet.setOwnerId(ownerId);
             selectedPet.setCategory(new Category(categoryName));
             if (isNew) {
-                petManagedBean.petsFacade.create(selectedPet);
+                petsFacade.create(selectedPet);
                 statusText = "Pet successfully saved!";
 
             } else {
-                petManagedBean.petsFacade.edit(selectedPet);
+                petsFacade.edit(selectedPet);
                 statusText = "Details successfully saved!";
             }
             outputTextClass = "success";

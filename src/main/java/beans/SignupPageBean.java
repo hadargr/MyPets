@@ -5,13 +5,14 @@
  */
 package beans;
 
+import ejb.CustomerFacadeLocal;
 import entities.Customer;
 import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import services.Utils;
-import static services.Utils.getRandomUUID;
 
 /**
  *
@@ -20,8 +21,9 @@ import static services.Utils.getRandomUUID;
 @ManagedBean(name = "signupPageBean")
 @ViewScoped
 public class SignupPageBean implements Serializable {
-    @ManagedProperty(value = "#{customerManagedBean}")
-    private CustomerManagedBean customerManagedBean;
+
+    @EJB
+    CustomerFacadeLocal customersFacade;
     @ManagedProperty(value = "#{currentUserBean}")
     private CurrentUserBean currentUserBean;
     private String email = null;
@@ -32,7 +34,7 @@ public class SignupPageBean implements Serializable {
     private String gender = null;
     private String about = null;
     private String error = null;
-    
+
     public SignupPageBean() {
     }
 
@@ -76,51 +78,44 @@ public class SignupPageBean implements Serializable {
         this.about = about;
     }
 
-    
-    public void setCustomerManagedBean(CustomerManagedBean bean) {
-        this.customerManagedBean = bean;
-    }
-
     public void setCurrentUserBean(CurrentUserBean bean) {
         this.currentUserBean = bean;
     }
-    
+
     public String getEmail() {
         return this.email;
     }
-    
+
     public String getPassword() {
         return this.password;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public String getError() {
         return this.error;
     }
-    
+
     public void setError(String error) {
         this.error = error;
         System.out.println(error);
     }
-    
 
-    public String doRegister() {
+    public void doRegister() {
         try {
             Customer customer;
             try {
-            customer = customerManagedBean.customersFacade.getByEmail(email);
-            setError("That email’s already in our system.");
-            return "signup";
+                customer = customersFacade.getByEmail(email);
+                setError("That email’s already in our system.");
             } catch (Exception e) {
-                String id = getRandomUUID();
-                customer = new Customer(id, firstName,email, password);
+                String id = Utils.getRandomUUID();
+                customer = new Customer(id, firstName, email, password);
                 if (lastName != null) {
                     customer.setFamilyName(lastName);
                 }
@@ -133,13 +128,13 @@ public class SignupPageBean implements Serializable {
                 if (about != null) {
                     customer.setAbout(about);
                 }
-                customerManagedBean.customersFacade.create(customer);
+                customersFacade.create(customer);
                 currentUserBean.setCurrentCustomer(customer);
-                return "index?faces-redirect=true";
+
+                Utils.navigateToPage("index");
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("doRegister error");
         }
-        return "signup";
     }
 }

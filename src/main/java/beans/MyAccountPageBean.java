@@ -5,9 +5,11 @@
  */
 package beans;
 
+import ejb.CustomerFacadeLocal;
 import entities.Customer;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -21,8 +23,8 @@ import services.Utils;
 @ViewScoped
 public class MyAccountPageBean implements Serializable {
 
-    @ManagedProperty(value = "#{customerManagedBean}")
-    private CustomerManagedBean customerManagedBean;
+    @EJB
+    CustomerFacadeLocal customersFacade;
     @ManagedProperty(value = "#{currentUserBean}")
     private CurrentUserBean currentUserBean;
     private String email = null;
@@ -90,10 +92,6 @@ public class MyAccountPageBean implements Serializable {
         this.about = about;
     }
 
-    public void setCustomerManagedBean(CustomerManagedBean bean) {
-        this.customerManagedBean = bean;
-    }
-
     public void setCurrentUserBean(CurrentUserBean bean) {
         this.currentUserBean = bean;
     }
@@ -137,7 +135,7 @@ public class MyAccountPageBean implements Serializable {
             customer.setFirstName(firstName);
             customer.setGender(gender);
             customer.setPassword(currentUserBean.getCurrentCustomer().getPassword());
-            customerManagedBean.customersFacade.edit(customer);
+            customersFacade.edit(customer);
             currentUserBean.setCurrentCustomer(customer);
         } catch (Exception e) {
             System.out.println("doUpdate error");

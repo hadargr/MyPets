@@ -14,13 +14,13 @@
                                  requiredMessage="Please enter email"
                                  value="#{loginPageBean.email}" placeholder="Email">
                     </p:inputText>
-                    <p:message for="emailInput" styleClass="error"/>
+                    <h:message for="emailInput" styleClass="error"/>
                 </div>
                 <div class="inputContainer">
                     <p:password id="passwordInput" required="true" requiredMessage="Please enter password" value="#{loginPageBean.password}" redisplay="true" placeholder="Password"/>
-                    <p:message for="passwordInput" styleClass="error"/>
+                    <h:message for="passwordInput" styleClass="error"/>
                 </div>
-                <p:commandButton value="Login" ajax="true" action="#{loginPageBean.doLogin}" update="errorText">
+                <p:commandButton value="Login" ajax="true" action="#{loginPageBean.doLogin}" update="loginForm">
                 </p:commandButton>
                 <p:outputLabel id="errorText" escape="false"
                                value="#{loginPageBean.error}" styleClass="error"/>
